@@ -157,26 +157,6 @@
         }
         /* initial hidden for GSAP */
         .gsap-hidden { opacity: 0; transform: translateY(20px); }
-
-        /* ===== NEW: Floating animation for Slide 3 bullet points ===== */
-        .owner-solution li, .ceo-solution li {
-            animation: float 3s ease-in-out infinite;
-        }
-        .owner-solution li:nth-child(1) { animation-delay: 0s; }
-        .owner-solution li:nth-child(2) { animation-delay: 0.2s; }
-        .owner-solution li:nth-child(3) { animation-delay: 0.4s; }
-        .owner-solution li:nth-child(4) { animation-delay: 0.6s; }
-        .ceo-solution li:nth-child(1) { animation-delay: 0.1s; }
-        .ceo-solution li:nth-child(2) { animation-delay: 0.3s; }
-        .ceo-solution li:nth-child(3) { animation-delay: 0.5s; }
-        .ceo-solution li:nth-child(4) { animation-delay: 0.7s; }
-
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-5px); }
-            100% { transform: translateY(0px); }
-        }
-        /* ===== end floating animation ===== */
     </style>
 </head>
 <body>
@@ -219,7 +199,7 @@
                 <p class="footer-note">Thousands of SMEs with owners wanting to step back. Thousands of young people wanting entrepreneurship but priced out.</p>
             </section>
 
-            <!-- SLIDE 3: SOLUTION SUMMARY (with floating bullets) -->
+            <!-- SLIDE 3: SOLUTION SUMMARY -->
             <section>
                 <h2>The Solution – Simple Summary</h2>
                 <div class="two-col">
@@ -368,13 +348,13 @@
         function animateSlide(slide) {
             gsap.set(slide.querySelectorAll('.gsap-hidden'), { clearProps: 'all' });
 
-            // Slide 1
+            // Slide 1: title lines stagger
             if (slide.querySelector('.title-line')) {
                 gsap.from(slide.querySelector('.title-line'), { opacity: 0, y: -50, duration: 0.8, ease: 'back.out(1.2)' });
                 gsap.from(slide.querySelector('.sub-line'), { opacity: 0, y: 30, duration: 0.8, delay: 0.3 });
             }
 
-            // Slide 2
+            // Slide 2: two columns from sides
             if (slide.querySelector('.owner-col')) {
                 gsap.from(slide.querySelector('.owner-col'), { x: -100, opacity: 0, duration: 0.7, ease: 'power2.out' });
                 gsap.from(slide.querySelector('.ceo-col'), { x: 100, opacity: 0, duration: 0.7, ease: 'power2.out', delay: 0.2 });
@@ -382,48 +362,67 @@
                 gsap.from(slide.querySelectorAll('.ceo-col li'), { opacity: 0, x: 20, stagger: 0.1, delay: 0.5 });
             }
 
-            // Slide 3 – note: the CSS float animation will start after GSAP finishes the intro
+            // Slide 3: solution columns pop + continuous floating
             if (slide.querySelector('.owner-solution')) {
+                // Intro animations
                 gsap.from(slide.querySelector('.owner-solution'), { scale: 0.8, opacity: 0, duration: 0.6, ease: 'back.out(1.2)' });
                 gsap.from(slide.querySelector('.ceo-solution'), { scale: 0.8, opacity: 0, duration: 0.6, delay: 0.3, ease: 'back.out(1.2)' });
                 gsap.from(slide.querySelector('.center-piece'), { y: 30, opacity: 0, duration: 0.8, delay: 0.6 });
+
+                // Kill any previous floating tweens on these elements
+                gsap.killTweensOf(slide.querySelectorAll('.owner-solution li, .ceo-solution li'));
+
+                // Start continuous floating with stagger
+                gsap.to(slide.querySelectorAll('.owner-solution li, .ceo-solution li'), {
+                    y: -5,
+                    duration: 1.5,
+                    ease: 'sine.inOut',
+                    repeat: -1,
+                    yoyo: true,
+                    stagger: {
+                        each: 0.2,
+                        from: 'start'
+                    }
+                });
             }
 
-            // Slide 4
+            // Slide 4: cards stagger
             if (slide.querySelector('.step1')) {
                 gsap.from(slide.querySelectorAll('.card'), { opacity: 0, y: 60, stagger: 0.15, duration: 0.7, ease: 'power2.out' });
             }
 
-            // Slide 5
+            // Slide 5: table highlight + RM0 pulse
             if (slide.querySelector('.rm0')) {
                 gsap.from(slide.querySelector('table'), { opacity: 0, y: 30, duration: 0.6 });
                 gsap.to(slide.querySelector('.rm0'), { scale: 1.2, repeat: 2, yoyo: true, duration: 0.4, delay: 0.8, ease: 'power1.inOut' });
                 gsap.from(slide.querySelector('div[style*="background:#dff9fb"]'), { x: -80, opacity: 0, duration: 0.8, delay: 0.5 });
             }
 
-            // Slide 6
+            // Slide 6: two paths slide in
             if (slide.querySelector('.express')) {
                 gsap.from(slide.querySelector('.express'), { x: -200, opacity: 0, duration: 0.7 });
                 gsap.from(slide.querySelector('.comprehensive'), { x: 200, opacity: 0, duration: 0.7, delay: 0.2 });
                 gsap.from(slide.querySelectorAll('.badge'), { scale: 0, rotation: -10, stagger: 0.2, delay: 0.5 });
             }
 
-            // Slide 7
+            // Slide 7: three owner types fade up
             if (slide.querySelector('.type1')) {
                 gsap.from(slide.querySelectorAll('.col'), { opacity: 0, y: 40, stagger: 0.2, duration: 0.6, ease: 'power2.out' });
             }
 
-            // Slide 8
+            // Slide 8: bullets fade in
             if (slide.querySelector('ul')) {
                 gsap.from(slide.querySelector('ul').children, { opacity: 0, x: -30, stagger: 0.15, duration: 0.6 });
                 gsap.from(slide.querySelector('p[style*="font-size:1.3rem"]'), { scale: 0.5, opacity: 0, delay: 0.5, duration: 0.6, ease: 'elastic.out(1, 0.3)' });
             }
         }
 
+        // Animate first slide immediately
         Reveal.on('ready', function(event) {
             animateSlide(event.currentSlide);
         });
 
+        // Animate on slide change
         Reveal.on('slidechanged', function(event) {
             animateSlide(event.currentSlide);
         });

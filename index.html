@@ -93,19 +93,19 @@
             display: inline-block;
             text-align: left;
         }
-        .reveal .card-grid { 
-            display: flex; 
-            gap: 1.5rem; 
-            flex-wrap: wrap; 
-            justify-content: center;
+        /* Vertical step cards for Slide 4 */
+        .step-vertical {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+            margin-top: 1rem;
         }
-        .reveal .card { 
-            flex: 1 1 200px; 
-            transition: transform 0.2s; 
+        .step-vertical .card {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
             text-align: left;
-        }
-        .reveal .card:hover { 
-            transform: translateY(-8px); 
         }
         .reveal .badge { 
             background: #1e3a5f; 
@@ -237,10 +237,10 @@
                 </div>
             </section>
 
-            <!-- SLIDE 4: HOW IT WORKS (3 STEPS) -->
+            <!-- SLIDE 4: HOW IT WORKS – VERTICAL STEPS -->
             <section>
                 <h2>How It Works</h2>
-                <div class="card-grid">
+                <div class="step-vertical">
                     <div class="card step1">
                         <span class="badge">1</span>
                         <h3>Owner Sets Terms</h3>
@@ -371,16 +371,16 @@
                 gsap.from(slide.querySelectorAll('.ceo-col li'), { opacity: 0, x: 20, stagger: 0.1, delay: 0.5 });
             }
 
-            // Slide 3: solution columns pop (no floating)
+            // Slide 3: solution columns pop
             if (slide.querySelector('.owner-solution')) {
                 gsap.from(slide.querySelector('.owner-solution'), { scale: 0.8, opacity: 0, duration: 0.6, ease: 'back.out(1.2)' });
                 gsap.from(slide.querySelector('.ceo-solution'), { scale: 0.8, opacity: 0, duration: 0.6, delay: 0.3, ease: 'back.out(1.2)' });
                 gsap.from(slide.querySelector('.center-piece'), { y: 30, opacity: 0, duration: 0.8, delay: 0.6 });
             }
 
-            // Slide 4: cards stagger
+            // Slide 4: vertical cards stagger
             if (slide.querySelector('.step1')) {
-                gsap.from(slide.querySelectorAll('.card'), { opacity: 0, y: 60, stagger: 0.15, duration: 0.7, ease: 'power2.out' });
+                gsap.from(slide.querySelectorAll('.card'), { opacity: 0, y: 40, stagger: 0.2, duration: 0.7, ease: 'power2.out' });
             }
 
             // Slide 5: table highlight + RM0 pulse
@@ -419,34 +419,52 @@
             animateSlide(event.currentSlide);
         });
 
-        // ===== VOICE‑OVER FOR EACH SLIDE =====
-        // Define spoken text for each slide (index 0 = slide 1)
+        // ===== VOICE‑OVER WITH FEMALE VOICE PREFERENCE =====
+        // Amended scripts for each slide
         const slideTexts = [
-            "LegacyBridge Malaysia. Bridging business owners who want to step back with the next generation of leaders.",
-            "The Problem. Business owners built businesses for decades, children don't want to take over, they want more candidate options, don't want to close and waste legacy. No successor, trapped. Young Malaysians want to run a business, have drive and ability, but no capital to buy or start, can't get bank loans. No entry point, stuck.",
-            "The Solution. Owner keeps 100 percent ownership initially, stops working, receives monthly profit, pays RM0 for our service. CEO runs daily operations, gets monthly salary, earns equity over time, pays small fee from salary. LegacyBridge finds the match and handles the transition. We structure the equity and salary deal for a win‑win solution. If the CEO doesn't work out, we help the owner switch to another CEO at a discounted price.",
-            "How It Works. Step 1: Owner sets terms – salary, equity, timeline. Step 2: We find the CEO – source young leaders, only those who accept terms, owner chooses best fit. Step 3: Owner steps back – CEO learns from owner, then takes over, owner receives monthly profit. No cost to owner, no capital needed from CEO.",
-            "Fee Structure. Traditional headhunters charge owners 20 to 30 percent upfront. Our innovation: Owner pays RM0. CEO pays 20 percent of first‑year salary through monthly deductions over 12 months. The business pays the CEO salary as normal. Why CEOs will pay: normally they need 200 to 500 thousand ringgit capital to start a business; here they pay only 2 to 5 thousand ringgit instead, get salary from day one, equity later, and mentorship.",
-            "Two Paths. Express path: about 30 days for urgent needs like health issues or sudden changes. 2‑week handover, 3 months support. Comprehensive path: about 6 months for maximum safety and depth. 3‑month shadowing, 12 months plus replacement guarantee. Owners choose based on their situation; we advise honestly.",
-            "Owner Types – Not Just Retirement. Ready to retire – worked decades, kids not interested, want to rest. Need a break – exhausted, business runs them, need freedom. Moving on – new dream, health issues, partnership change. This expands our market significantly – not just retiring but any owner who wants to step back.",
-            "Market Size and Opportunity. Malaysia context: SMEs are 97 percent of businesses, about 1 million total. Aging owners – many 50 to 70 years old, no successors. Youth unemployment and underemployment – graduates working jobs below potential. Entrepreneurship desire is high among young Malaysians, but capital is a barrier. AI disruption – white‑collar jobs at risk, many will shift to real economy, which is exactly what SMEs represent. Our addressable market: thousands of matches waiting to happen. First 3 placements as proof of concept."
+            "Welcome to LegacyBridge Malaysia. We bridge business owners who want to step back with the next generation of leaders.",
+            "On one side, business owners have spent decades building their companies. Their children aren't interested in taking over, and they don't want to sell or close – they're trapped without a successor. On the other side, young Malaysians have the drive and ability to run a business but lack the capital to buy or start one. They're stuck with no entry point. Thousands of SMEs have owners wanting to step back, and thousands of young people want to become entrepreneurs but are priced out.",
+            "Our solution is simple: we match owners with aspiring CEOs. The owner keeps 100% ownership initially, stops working, receives monthly profit, and pays absolutely nothing for our service. The CEO runs daily operations, gets a monthly salary, earns equity over time, and pays a small fee from their salary. LegacyBridge finds the match and handles the transition, structuring a win‑win deal. If the CEO doesn't work out, we help the owner switch to another at a discounted price.",
+            "It works in three steps. First, the owner sets the terms – salary, equity, and timeline. Second, we find the CEO – we source young leaders who accept those terms, and the owner chooses the best fit. Third, the owner steps back – the CEO learns from the owner, then takes over, and the owner continues to receive monthly profit. No cost to the owner, and no capital needed from the CEO.",
+            "Traditional headhunters charge owners 20 to 30 percent upfront – expensive and hard to sell. Our innovation is different: the owner pays RM0. The CEO pays 20 percent of their first‑year salary through monthly deductions over 12 months. The business pays the CEO’s salary as normal. Why would a CEO pay? Normally they’d need 200 to 500 thousand ringgit to start a business. Here they pay only 2 to 5 thousand ringgit, get a salary from day one, earn equity later, and receive mentorship. It’s a win‑win‑win.",
+            "We offer two paths. The Express path takes about 30 days – ideal for urgent needs like health issues or sudden changes, with a 2‑week handover and 3 months of support. The Comprehensive path takes about 6 months – for maximum safety and depth, with a 3‑month shadowing and 12 months plus a replacement guarantee. Owners choose based on their situation, and we advise honestly.",
+            "Our market isn't limited to retirement. We help owners who are ready to retire – worked decades, kids not interested, want to rest. Those who need a break – exhausted, the business runs them, they need freedom. And those moving on – pursuing a new dream, facing health issues, or dealing with partnership changes. This expands our market significantly – any owner who wants to step back.",
+            "In Malaysia, SMEs make up 97% of businesses – about one million total. Many owners are aging, between 50 and 70, with no successors. At the same time, youth unemployment and underemployment are high; graduates work below their potential. Entrepreneurship desire is strong among young Malaysians, but capital is a barrier. Add to that AI disruption – white‑collar jobs are at risk, and many will shift to the real economy, exactly the sector SMEs represent. Our addressable market is thousands of matches waiting to happen. Our goal: first three placements as proof of concept."
         ];
 
         let utterance = null;
 
+        // Function to get a female voice if available
+        function getFemaleVoice() {
+            const voices = window.speechSynthesis.getVoices();
+            // Common female voice names across platforms
+            const femaleIndicators = ['female', 'zira', 'samantha', 'google uk english female', 'google deutsch female', 'google français female'];
+            return voices.find(voice => 
+                femaleIndicators.some(indicator => voice.name.toLowerCase().includes(indicator))
+            );
+        }
+
         function speakCurrentSlide() {
-            // Stop any ongoing speech
             if (utterance) window.speechSynthesis.cancel();
 
-            // Get current slide index (0‑based)
             const index = Reveal.getIndices().h;
-            if (index < slideTexts.length) {
-                utterance = new SpeechSynthesisUtterance(slideTexts[index]);
-                utterance.rate = 0.9;      // speed (0.1 to 10)
-                utterance.pitch = 1;        // pitch (0 to 2)
-                utterance.volume = 1;       // volume (0 to 1)
-                window.speechSynthesis.speak(utterance);
+            if (index >= slideTexts.length) return;
+
+            utterance = new SpeechSynthesisUtterance(slideTexts[index]);
+
+            // Try to set a female voice
+            const femaleVoice = getFemaleVoice();
+            if (femaleVoice) {
+                utterance.voice = femaleVoice;
+                console.log('Using female voice:', femaleVoice.name);
+            } else {
+                console.log('No female voice found, using default');
             }
+
+            utterance.rate = 0.9;
+            utterance.pitch = 1;
+            utterance.volume = 1;
+            window.speechSynthesis.speak(utterance);
         }
 
         // Speak when slide changes
@@ -454,9 +472,15 @@
             speakCurrentSlide();
         });
 
-        // Speak first slide when ready
+        // Speak first slide when ready – ensure voices are loaded
         Reveal.on('ready', () => {
-            speakCurrentSlide();
+            if (window.speechSynthesis.getVoices().length) {
+                speakCurrentSlide();
+            } else {
+                window.speechSynthesis.onvoiceschanged = () => {
+                    speakCurrentSlide();
+                };
+            }
         });
 
         // Press 'S' to stop speaking
@@ -467,7 +491,7 @@
         });
     </script>
 
-    <!-- additional tweaks for better fitting -->
+    <!-- additional tweaks -->
     <style>
         .reveal .card p { margin: 0.5rem 0; font-size: 1rem; }
         .reveal .badge { font-size: 1rem; }

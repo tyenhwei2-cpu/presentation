@@ -11,30 +11,151 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         * { font-family: 'Inter', sans-serif; }
-        .reveal { background: #f9fafc; }
-        .reveal h1, .reveal h2, .reveal h3 { font-weight: 700; letter-spacing: -0.02em; }
-        .reveal h1 { font-size: 2.8em; color: #1e3a5f; }
-        .reveal h2 { color: #0b2b4a; border-bottom: 3px solid #4a9eff; display: inline-block; padding-bottom: 0.2em; }
-        .reveal .highlight { color: #0f6c4a; font-weight: 700; background: #e0f2e9; padding: 0.2em 0.5em; border-radius: 30px; }
-        .reveal .rm0 { background: #1e8e6e; color: white; font-size: 1.4em; padding: 0.2em 0.8em; border-radius: 50px; display: inline-block; }
-        .reveal .two-col, .reveal .three-col { display: flex; gap: 2rem; margin-top: 1.5rem; }
-        .reveal .col { background: white; padding: 1.8rem; border-radius: 24px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); flex: 1; }
-        .reveal .col h3 { font-size: 1.6rem; margin-top: 0; color: #1e3a5f; }
-        .reveal .col ul { list-style: none; padding: 0; }
-        .reveal .col li { margin: 1rem 0; font-size: 1.2rem; display: flex; align-items: center; gap: 0.5rem; }
-        .reveal .col li::before { content: "•"; color: #4a9eff; font-weight: bold; font-size: 1.5rem; }
-        .reveal .card-grid { display: flex; gap: 1.5rem; justify-content: center; }
-        .reveal .card { background: white; padding: 1.8rem; border-radius: 24px; box-shadow: 0 8px 20px rgba(0,40,80,0.1); flex: 1; transition: transform 0.2s; }
-        .reveal .card:hover { transform: translateY(-8px); }
-        .reveal .badge { background: #1e3a5f; color: white; padding: 0.3rem 1rem; border-radius: 30px; font-weight: 600; display: inline-block; margin-bottom: 1rem; }
-        .reveal .table { background: white; border-radius: 24px; padding: 1.5rem; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        .reveal table { width: 100%; border-collapse: collapse; }
-        .reveal th { background: #1e3a5f; color: white; padding: 0.8rem; font-weight: 600; }
-        .reveal td { padding: 1rem; border-bottom: 1px solid #eef2f6; }
-        .reveal .emph { font-size: 1.3em; font-weight: 700; color: #0f6c4a; }
-        .reveal .icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
-        .reveal .footer-note { margin-top: 2rem; font-size: 0.9rem; color: #64748b; }
-        /* animation classes (initial hidden) */
+        .reveal {
+            font-size: clamp(14px, 2vw, 18px);
+            background: #f9fafc;
+        }
+        .reveal h1 { 
+            font-size: 3em; 
+            color: #1e3a5f; 
+            font-weight: 700; 
+            letter-spacing: -0.02em; 
+        }
+        .reveal h2 { 
+            font-size: 2.2em; 
+            color: #0b2b4a; 
+            border-bottom: 3px solid #4a9eff; 
+            display: inline-block; 
+            padding-bottom: 0.2em;
+            margin-bottom: 0.8em;
+        }
+        .reveal h3 { 
+            font-size: 1.6em; 
+            color: #1e3a5f; 
+            margin-top: 0.2em;
+        }
+        .reveal .highlight { 
+            background: #e0f2e9; 
+            padding: 0.2em 0.8em; 
+            border-radius: 30px; 
+            font-weight: 700; 
+            color: #0f6c4a;
+        }
+        .reveal .rm0 { 
+            background: #1e8e6e; 
+            color: white; 
+            font-size: 1.4em; 
+            padding: 0.2em 0.8em; 
+            border-radius: 50px; 
+            display: inline-block; 
+        }
+        .reveal .two-col, .reveal .three-col { 
+            display: flex; 
+            gap: 1.5rem; 
+            flex-wrap: wrap; 
+            justify-content: center;
+            margin-top: 1rem;
+        }
+        .reveal .col, .reveal .card { 
+            background: white; 
+            padding: 1.5rem; 
+            border-radius: 24px; 
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); 
+            flex: 1 1 280px; 
+            min-width: 250px;
+            word-wrap: break-word;
+        }
+        .reveal .col ul { 
+            list-style: none; 
+            padding: 0; 
+            margin: 0.5rem 0;
+        }
+        .reveal .col li { 
+            margin: 0.8rem 0; 
+            font-size: 1.1rem; 
+            display: flex; 
+            align-items: center; 
+            gap: 0.5rem; 
+            line-height: 1.3;
+        }
+        .reveal .col li::before { 
+            content: "•"; 
+            color: #4a9eff; 
+            font-weight: bold; 
+            font-size: 1.5rem; 
+            line-height: 1;
+        }
+        .reveal .card-grid { 
+            display: flex; 
+            gap: 1.5rem; 
+            flex-wrap: wrap; 
+            justify-content: center;
+        }
+        .reveal .card { 
+            flex: 1 1 200px; 
+            transition: transform 0.2s; 
+            text-align: left;
+        }
+        .reveal .card:hover { 
+            transform: translateY(-8px); 
+        }
+        .reveal .badge { 
+            background: #1e3a5f; 
+            color: white; 
+            padding: 0.3rem 1rem; 
+            border-radius: 30px; 
+            font-weight: 600; 
+            display: inline-block; 
+            margin-bottom: 1rem; 
+        }
+        .reveal .table { 
+            background: white; 
+            border-radius: 24px; 
+            padding: 1.5rem; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05); 
+            overflow-x: auto;
+        }
+        .reveal table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            font-size: 1rem;
+        }
+        .reveal th { 
+            background: #1e3a5f; 
+            color: white; 
+            padding: 0.8rem; 
+            font-weight: 600; 
+        }
+        .reveal td { 
+            padding: 1rem 0.8rem; 
+            border-bottom: 1px solid #eef2f6; 
+        }
+        .reveal .emph { 
+            font-size: 1.3em; 
+            font-weight: 700; 
+            color: #0f6c4a; 
+        }
+        .reveal .icon { 
+            font-size: 2.5rem; 
+            margin-bottom: 0.5rem; 
+            display: block;
+        }
+        .reveal .footer-note { 
+            margin-top: 2rem; 
+            font-size: 0.9rem; 
+            color: #64748b; 
+        }
+        .reveal .center-piece {
+            background: #e9efff;
+            padding: 1.5rem;
+            border-radius: 40px;
+            margin: 1.5rem auto;
+            max-width: 900px;
+            font-size: 1.2rem;
+            font-weight: 500;
+            line-height: 1.5;
+        }
+        /* initial hidden for GSAP */
         .gsap-hidden { opacity: 0; transform: translateY(20px); }
     </style>
 </head>
@@ -45,9 +166,7 @@
             <!-- SLIDE 1: TITLE -->
             <section>
                 <h1 class="title-line">LegacyBridge Malaysia</h1>
-                <h3 class="sub-line" style="font-weight:400; margin-top:0.5rem;">Bridging retiring business owners with the next generation of leaders</h3>
-                <p style="margin-top:2rem;" class="presenter">Presented by: <strong>[Your Name]</strong> | <em>[Date]</em></p>
-                <p class="mentor">For: <strong>[Mentor Name]</strong></p>
+                <h3 class="sub-line" style="font-weight:400; margin-top:0.5rem;">Bridging business owners who want to step back with the next generation of leaders</h3>
             </section>
 
             <!-- SLIDE 2: TWO‑SIDED PROBLEM -->
@@ -59,9 +178,9 @@
                         <h3>Business Owners</h3>
                         <ul>
                             <li>Built business for decades</li>
-                            <li>Children don’t want to take over</li>
-                            <li>Don’t want to sell to strangers</li>
-                            <li>Don’t want to close (waste legacy)</li>
+                            <li>Children don't want to take over</li>
+                            <li>Want more candidate options</li>
+                            <li>Don't want to close (waste legacy)</li>
                             <li><strong>No successor. Trapped.</strong></li>
                         </ul>
                     </div>
@@ -72,12 +191,12 @@
                             <li>Want to run a business</li>
                             <li>Have drive and ability</li>
                             <li><strong>No capital</strong> to buy/start</li>
-                            <li>Can’t get bank loans</li>
+                            <li>Can't get bank loans</li>
                             <li><strong>No entry point. Stuck.</strong></li>
                         </ul>
                     </div>
                 </div>
-                <p class="footer-note">Thousands of SMEs with aging owners. Thousands of young people wanting entrepreneurship but priced out.</p>
+                <p class="footer-note">Thousands of SMEs with owners wanting to step back. Thousands of young people wanting entrepreneurship but priced out.</p>
             </section>
 
             <!-- SLIDE 3: SOLUTION SUMMARY -->
@@ -88,7 +207,7 @@
                         <span class="icon">👤</span>
                         <h3>Owner</h3>
                         <ul>
-                            <li>Keeps 100% ownership</li>
+                            <li>Keeps 100% ownership initially</li>
                             <li>Stops working</li>
                             <li>Receives monthly profit</li>
                             <li><span class="highlight">Pays RM0 for our service</span></li>
@@ -105,8 +224,8 @@
                         </ul>
                     </div>
                 </div>
-                <div style="margin-top:2rem; font-size:1.5rem; font-weight:700; background:#e9efff; padding:1rem; border-radius:60px;">
-                    ⚡ LegacyBridge finds the match and handles the transition.
+                <div class="center-piece">
+                    <strong>LegacyBridge</strong> finds the match and handles the transition. We structure the equity and salary deal for a win‑win solution – CEO earns equity through performance, owner keeps ownership and profits. <strong>If the CEO doesn't work out, we help the owner switch to another CEO at a discounted price.</strong>
                 </div>
             </section>
 
@@ -127,7 +246,7 @@
                     <div class="card step3">
                         <span class="badge">3</span>
                         <h3>Owner Steps Back</h3>
-                        <p>CEO learns from owner (3 months) • Takes over • Owner receives monthly profit</p>
+                        <p>CEO learns from owner • When ready, CEO takes over • Owner receives monthly profit</p>
                     </div>
                 </div>
                 <p class="footer-note">No cost to owner. No capital needed from CEO.</p>
@@ -136,17 +255,17 @@
             <!-- SLIDE 5: FEE STRUCTURE (THE MAGIC) -->
             <section>
                 <h2>The Magic – Fee Structure</h2>
-                <p style="font-size:1.2rem; background:#ffe8e0; padding:0.8rem; border-radius:40px;">Traditional headhunters: owners pay 20‑30% upfront → expensive, hard to sell.</p>
+                <p style="font-size:1.1rem; background:#ffe8e0; padding:0.8rem; border-radius:40px; margin-bottom:1.5rem;">Traditional headhunters: owners pay 20‑30% upfront → expensive, hard to sell.</p>
                 <div class="table">
                     <table>
                         <tr><th>Who Pays</th><th>Amount</th><th>How</th></tr>
                         <tr><td><strong>Owner</strong></td><td><span class="rm0">RM0</span></td><td>–</td></tr>
-                        <tr><td><strong>CEO</strong></td><td>10‑15% of first‑year salary</td><td>Monthly deduction over 12 months</td></tr>
-                        <tr><td><strong>Business</strong></td><td>CEO’s salary (as normal)</td><td>–</td></tr>
+                        <tr><td><strong>CEO</strong></td><td><strong>20% of first‑year salary</strong></td><td>Monthly deduction over 12 months</td></tr>
+                        <tr><td><strong>Business</strong></td><td>CEO's salary (as normal)</td><td>–</td></tr>
                     </table>
                 </div>
                 <div style="margin-top:2rem; background:#dff9fb; padding:1.5rem; border-radius:24px;">
-                    <p style="margin:0"><strong>Why CEOs will pay:</strong><br>• Normally need RM100k–RM200k capital to start a business<br>• They pay RM5k–RM8k instead (small monthly)<br>• Salary from day one, equity later, mentorship</p>
+                    <p style="margin:0"><strong>Why CEOs will pay:</strong><br>• Normally need <strong>RM200k–RM500k capital</strong> to start a business<br>• They pay <strong>RM2k–RM5k instead</strong> (small monthly)<br>• Salary from day one, equity later, mentorship</p>
                 </div>
                 <p class="footer-note">✨ Win‑win‑win.</p>
             </section>
@@ -157,23 +276,21 @@
                 <div class="card-grid">
                     <div class="card express">
                         <span class="badge" style="background:#e67e22;">Express (Fast)</span>
-                        <p>~30 days</p>
+                        <p><strong>~30 days</strong></p>
                         <p>For urgent needs (health, sudden changes)</p>
                         <p>2‑week handover • 3 months support</p>
-                        <p><strong>Deposit: RM500</strong><br>Fee: 10‑15%</p>
                     </div>
                     <div class="card comprehensive">
                         <span class="badge" style="background:#2980b9;">Comprehensive (Thorough)</span>
-                        <p>~6 months</p>
+                        <p><strong>~6 months</strong></p>
                         <p>For maximum safety and depth</p>
                         <p>3‑month shadowing • 12 months + replacement guarantee</p>
-                        <p><strong>Deposit: RM1,000</strong><br>Fee: 12‑15%</p>
                     </div>
                 </div>
                 <p class="footer-note">Owners choose based on their situation. We advise honestly.</p>
             </section>
 
-            <!-- SLIDE 7: OWNER TYPES (BEYOND RETIREMENT) -->
+            <!-- SLIDE 7: OWNER TYPES -->
             <section>
                 <h2>Owner Types – Not Just Retirement</h2>
                 <div class="three-col">
@@ -193,81 +310,23 @@
                         <p>New dream. Health issues. Partnership change.</p>
                     </div>
                 </div>
-                <p class="footer-note">This expands our market significantly – not just “retiring” but any owner who wants to step back.</p>
+                <p class="footer-note">This expands our market significantly – not just "retiring" but any owner who wants to step back.</p>
             </section>
 
             <!-- SLIDE 8: MARKET SIZE & OPPORTUNITY -->
             <section>
                 <h2>Market Size & Opportunity</h2>
-                <div style="background:white; border-radius:24px; padding:1.8rem; text-align:left;">
+                <div style="background:white; border-radius:24px; padding:1.8rem; text-align:left; max-width:900px; margin:0 auto;">
                     <p><strong>Malaysia context:</strong></p>
-                    <ul style="list-style-type:disc; font-size:1.2rem;">
+                    <ul style="list-style-type:disc; font-size:1.1rem; padding-left:1.5rem;">
                         <li><strong>SMEs:</strong> 97% of businesses, ~1 million total</li>
                         <li><strong>Aging owners:</strong> Many 50‑70 years old, no successors</li>
-                        <li><strong>Youth unemployment/underemployment:</strong> Graduates working below potential</li>
+                        <li><strong>Youth unemployment/underemployment:</strong> Graduates working jobs below potential</li>
                         <li><strong>Entrepreneurship desire:</strong> High among young Malaysians, but capital is barrier</li>
                     </ul>
-                    <p style="margin-top:1.5rem; font-size:1.4rem; font-weight:700;">📈 Our addressable market: Thousands of matches waiting to happen.</p>
-                    <p><em>Early traction: [Share any conversations, interest, or validation you have]</em></p>
+                    <p style="margin-top:1.5rem; font-size:1.3rem; font-weight:700;">📈 Our addressable market: Thousands of matches waiting to happen.</p>
                 </div>
                 <p class="footer-note">First 3 placements as proof of concept.</p>
-            </section>
-
-            <!-- SLIDE 9 (optional) – FEEDBACK AREAS (you can remove if not needed) -->
-            <section>
-                <h2>Where I Need Your Feedback</h2>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem;">
-                    <div style="background:#eef2f6; border-radius:20px; padding:1.2rem;">
-                        <h4>Fee structure</h4>
-                        <p>10‑15% from CEO – reasonable? Will CEOs pay?</p>
-                    </div>
-                    <div style="background:#eef2f6; border-radius:20px; padding:1.2rem;">
-                        <h4>Legal structure</h4>
-                        <p>Salary deduction issues? Contract templates needed?</p>
-                    </div>
-                    <div style="background:#eef2f6; border-radius:20px; padding:1.2rem;">
-                        <h4>Risk mitigation</h4>
-                        <p>Non‑compete + equity vesting enough?</p>
-                    </div>
-                    <div style="background:#eef2f6; border-radius:20px; padding:1.2rem;">
-                        <h4>Two paths</h4>
-                        <p>Express vs Comprehensive – does this make sense?</p>
-                    </div>
-                    <div style="background:#eef2f6; border-radius:20px; padding:1.2rem;">
-                        <h4>Owner types</h4>
-                        <p>Missing any category? Focus one first?</p>
-                    </div>
-                    <div style="background:#eef2f6; border-radius:20px; padding:1.2rem;">
-                        <h4>Revenue projection</h4>
-                        <p>Realistic Year 1? 5 placements? 10?</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- SLIDE 10 (optional) – NEXT STEPS -->
-            <section>
-                <h2>Next Steps</h2>
-                <div style="display:flex; flex-direction:column; gap:0.8rem; max-width:600px; margin:auto;">
-                    <div style="display:flex; justify-content:space-between; background:#f1f5f9; padding:1rem; border-radius:40px;">
-                        <span>This week</span><span>Incorporate mentor feedback</span>
-                    </div>
-                    <div style="display:flex; justify-content:space-between; background:#f1f5f9; padding:1rem; border-radius:40px;">
-                        <span>Next 2 weeks</span><span>Build simple website (5 pages)</span>
-                    </div>
-                    <div style="display:flex; justify-content:space-between; background:#f1f5f9; padding:1rem; border-radius:40px;">
-                        <span>Next 30 days</span><span>Talk to 5‑10 owners (discovery calls)</span>
-                    </div>
-                    <div style="display:flex; justify-content:space-between; background:#f1f5f9; padding:1rem; border-radius:40px;">
-                        <span>Next 30 days</span><span>Talk to 5‑10 potential CEOs</span>
-                    </div>
-                    <div style="display:flex; justify-content:space-between; background:#f1f5f9; padding:1rem; border-radius:40px;">
-                        <span>Month 2</span><span>First placement (Express path)</span>
-                    </div>
-                    <div style="display:flex; justify-content:space-between; background:#f1f5f9; padding:1rem; border-radius:40px;">
-                        <span>Month 3‑6</span><span>Refine model, document case study</span>
-                    </div>
-                </div>
-                <p class="footer-note">Goal: First 3 placements as proof of concept.</p>
             </section>
 
         </div>
@@ -277,14 +336,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.4.0/reveal.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script>
-        // Initialize Reveal.js
+        // Initialize Reveal.js with flexible dimensions
         Reveal.initialize({
             hash: true,
-            transition: 'slide',  // fade/slide/convex
+            transition: 'slide',
             backgroundTransition: 'fade',
-            width: 1200,
-            height: 700,
-            margin: 0.1
+            // No fixed width/height – let it be responsive
         });
 
         // GSAP animations triggered after slide loads
@@ -296,8 +353,6 @@
             if (slide.querySelector('.title-line')) {
                 gsap.from(slide.querySelector('.title-line'), { opacity: 0, y: -50, duration: 0.8, ease: 'back.out(1.2)' });
                 gsap.from(slide.querySelector('.sub-line'), { opacity: 0, y: 30, duration: 0.8, delay: 0.3 });
-                gsap.from(slide.querySelector('.presenter'), { opacity: 0, scale: 0.8, duration: 0.6, delay: 0.6 });
-                gsap.from(slide.querySelector('.mentor'), { opacity: 0, y: 20, duration: 0.5, delay: 0.9 });
             }
 
             // Slide 2: two columns from sides
@@ -312,7 +367,7 @@
             if (slide.querySelector('.owner-solution')) {
                 gsap.from(slide.querySelector('.owner-solution'), { scale: 0.8, opacity: 0, duration: 0.6, ease: 'back.out(1.2)' });
                 gsap.from(slide.querySelector('.ceo-solution'), { scale: 0.8, opacity: 0, duration: 0.6, delay: 0.3, ease: 'back.out(1.2)' });
-                gsap.from(slide.querySelector('.highlight'), { backgroundColor: '#ffe68f', repeat: 1, yoyo: true, duration: 0.8, delay: 0.8 });
+                gsap.from(slide.querySelector('.center-piece'), { y: 30, opacity: 0, duration: 0.8, delay: 0.6 });
             }
 
             // Slide 4: cards stagger
@@ -342,17 +397,7 @@
             // Slide 8: bullets fade in
             if (slide.querySelector('ul')) {
                 gsap.from(slide.querySelector('ul').children, { opacity: 0, x: -30, stagger: 0.15, duration: 0.6 });
-                gsap.from(slide.querySelector('p[style*="font-size:1.4rem"]'), { scale: 0.5, opacity: 0, delay: 0.5, duration: 0.6, ease: 'elastic.out(1, 0.3)' });
-            }
-
-            // Slide 9: feedback cards (if present)
-            if (slide.querySelector('div[style*="grid-template-columns"]')) {
-                gsap.from(slide.querySelectorAll('div[style*="background:#eef2f6"]'), { opacity: 0, scale: 0.7, stagger: 0.1, duration: 0.5, ease: 'back.out(1)' });
-            }
-
-            // Slide 10: timeline items
-            if (slide.querySelector('div[style*="display:flex; flex-direction:column; gap:0.8rem;"]')) {
-                gsap.from(slide.querySelectorAll('div[style*="background:#f1f5f9"]'), { opacity: 0, x: -80, stagger: 0.1, duration: 0.6 });
+                gsap.from(slide.querySelector('p[style*="font-size:1.3rem"]'), { scale: 0.5, opacity: 0, delay: 0.5, duration: 0.6, ease: 'elastic.out(1, 0.3)' });
             }
         }
 
@@ -367,9 +412,13 @@
         });
     </script>
     <style>
-        /* additional custom touches */
+        /* additional tweaks for better fitting */
         .reveal .col ul { list-style-type: none; }
-        .reveal .col li::before { content: "✓"; color: #1e8e6e; margin-right: 0.6rem; font-weight: bold; }
+        .reveal .col li::before { content: "✓"; color: #1e8e6e; margin-right: 0.6rem; font-weight: bold; font-size: 1rem; }
+        .reveal .card p { margin: 0.5rem 0; font-size: 1rem; }
+        .reveal .badge { font-size: 1rem; }
+        .reveal .center-piece { font-size: 1.1rem; }
+        .reveal .footer-note { font-size: 0.85rem; }
     </style>
 </body>
 </html>

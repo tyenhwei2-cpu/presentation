@@ -346,14 +346,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 
     <script>
-        // Initialize Reveal.js
         Reveal.initialize({
             hash: true,
             transition: 'slide',
             backgroundTransition: 'fade',
         });
 
-        // GSAP animations (unchanged, but we keep them)
+        // GSAP animations (unchanged)
         function animateSlide(slide) {
             gsap.set(slide.querySelectorAll('.gsap-hidden'), { clearProps: 'all' });
 
@@ -404,7 +403,7 @@
         Reveal.on('ready', (event) => animateSlide(event.currentSlide));
         Reveal.on('slidechanged', (event) => animateSlide(event.currentSlide));
 
-        // ===== VOICE‑OVER – SIMPLIFIED TO PLAY ON EVERY SLIDE =====
+        // ===== VOICE‑OVER – FORCES SPEECH ON EVERY SLIDE IMMEDIATELY =====
         const slideTexts = [
             "Welcome to LegacyBridge Malaysia. We bridge business owners who want to step back with the next generation of leaders.",
             "On one side, business owners have spent decades building their companies. Their children aren't interested in taking over, and they don't want to sell or close – they're trapped without a successor. On the other side, young Malaysians have the drive and ability to run a business but lack the capital to buy or start one. They're stuck with no entry point. Thousands of SMEs have owners wanting to step back, and thousands of young people want to become entrepreneurs but are priced out.",
@@ -428,6 +427,7 @@
 
         function speakCurrentSlide() {
             const index = Reveal.getIndices().h;
+            if (index >= slideTexts.length) return;
 
             // Cancel any ongoing speech
             if (utterance) {
@@ -435,20 +435,21 @@
                 utterance = null;
             }
 
-            if (index >= slideTexts.length) return;
+            // Small delay to ensure cancel completes, then start new speech
+            setTimeout(() => {
+                utterance = new SpeechSynthesisUtterance(slideTexts[index]);
 
-            utterance = new SpeechSynthesisUtterance(slideTexts[index]);
+                const femaleVoice = getFemaleVoice();
+                if (femaleVoice) {
+                    utterance.voice = femaleVoice;
+                }
 
-            const femaleVoice = getFemaleVoice();
-            if (femaleVoice) {
-                utterance.voice = femaleVoice;
-            }
+                utterance.rate = 0.9;
+                utterance.pitch = 1;
+                utterance.volume = 1;
 
-            utterance.rate = 0.9;
-            utterance.pitch = 1;
-            utterance.volume = 1;
-
-            window.speechSynthesis.speak(utterance);
+                window.speechSynthesis.speak(utterance);
+            }, 50); // 50ms delay – enough to let cancel finish
         }
 
         // Speak when slide changes
@@ -456,7 +457,6 @@
 
         // Speak first slide when ready
         Reveal.on('ready', () => {
-            // Ensure voices are loaded before first speak
             if (window.speechSynthesis.getVoices().length) {
                 speakCurrentSlide();
             } else {

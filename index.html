@@ -179,7 +179,7 @@
     <div class="reveal">
         <div class="slides">
 
-            <!-- SLIDE 1: TITLE (with wavy animation) -->
+            <!-- SLIDE 1: TITLE (with continuous wavy animation) -->
             <section>
                 <h1 class="title-line">LegacyBridge Malaysia</h1>
                 <h3 class="sub-line" style="font-weight:400; margin-top:0.5rem;">Bridging business owners who want to step back with the next generation of leaders</h3>
@@ -361,42 +361,44 @@
             backgroundTransition: 'fade',
         });
 
-        // ===== WAVY TITLE ANIMATION ON SLIDE 1 =====
-        function animateWavyTitle(slide) {
+        // ===== CONTINUOUS WAVY TITLE ON SLIDE 1 =====
+        function setupWavyTitle(slide) {
             const title = slide.querySelector('.title-line');
             if (!title) return;
 
-            // Split the title into characters, wrap each with <span class="char">
-            const text = title.innerText;
-            title.innerHTML = '';
-            for (let char of text) {
-                const span = document.createElement('span');
-                span.className = 'char';
-                span.innerText = char === ' ' ? '\u00A0' : char; // preserve spaces
-                title.appendChild(span);
+            // Split the title into characters only once
+            if (!title.classList.contains('split-done')) {
+                const text = title.innerText;
+                title.innerHTML = '';
+                for (let char of text) {
+                    const span = document.createElement('span');
+                    span.className = 'char';
+                    span.innerText = char === ' ' ? '\u00A0' : char;
+                    title.appendChild(span);
+                }
+                title.classList.add('split-done');
             }
 
-            // GSAP wave animation: each character moves up and down in a staggered wave
-            gsap.fromTo(title.querySelectorAll('.char'),
-                { y: 0 },
-                {
-                    y: -10,
-                    duration: 1.2,
-                    ease: 'sine.inOut',
-                    stagger: {
-                        each: 0.05,
-                        from: 'start',
-                        yoyo: true,
-                        repeat: 1 // repeat once to create a wave that settles
-                    },
-                    clearProps: 'y' // reset after animation so text stays normal
-                }
-            );
+            // Kill any previous animation on these chars
+            gsap.killTweensOf(title.querySelectorAll('.char'));
 
-            // Subtitle simple fade-in
+            // Start a gentle, continuous wave
+            gsap.to(title.querySelectorAll('.char'), {
+                y: -8,
+                duration: 1.2,
+                ease: 'sine.inOut',
+                stagger: {
+                    each: 0.08,
+                    from: 'start',
+                },
+                repeat: -1,
+                yoyo: true
+            });
+
+            // Fade in subtitle (only once)
             gsap.fromTo(slide.querySelector('.sub-line'),
                 { opacity: 0, y: 20 },
-                { opacity: 1, y: 0, duration: 1, delay: 0.8 }
+                { opacity: 1, y: 0, duration: 1, delay: 0.5 }
             );
         }
 
@@ -415,17 +417,15 @@
         Reveal.on('slidechanged', startMusic);
         document.addEventListener('click', startMusic, { once: true });
         document.addEventListener('keydown', startMusic, { once: true });
-
-        // Also try on ready
         Reveal.on('ready', startMusic);
 
-        // ===== GSAP ANIMATIONS FOR OTHER SLIDES (unchanged) =====
+        // ===== GSAP ANIMATIONS FOR OTHER SLIDES =====
         function animateSlide(slide) {
             gsap.set(slide.querySelectorAll('.gsap-hidden'), { clearProps: 'all' });
 
-            // Slide 1 is handled separately
+            // Slide 1: wavy title (continuous)
             if (slide.querySelector('.title-line')) {
-                animateWavyTitle(slide);
+                setupWavyTitle(slide);
             }
 
             // Slide 2
@@ -477,7 +477,7 @@
         Reveal.on('ready', (event) => animateSlide(event.currentSlide));
         Reveal.on('slidechanged', (event) => animateSlide(event.currentSlide));
 
-        // Stop music on 'S' key (optional)
+        // Stop music on 'S' key
         document.addEventListener('keydown', (e) => {
             if (e.key === 's' || e.key === 'S') {
                 music.pause();

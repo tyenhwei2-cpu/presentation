@@ -102,7 +102,7 @@
             margin-top: 1rem;
         }
         .step-horizontal .card {
-            flex: 0 1 300px; /* fixed width, but can shrink/grow */
+            flex: 0 1 300px;
             min-width: 250px;
             margin: 0;
             padding: 1.5rem;
@@ -163,9 +163,30 @@
             font-weight: 500;
             line-height: 1.5;
         }
-        /* Wavy text container – each character will be wrapped by GSAP */
         .char {
             display: inline-block;
+        }
+        /* Play button for music fallback */
+        #music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+            background: #1e8e6e;
+            color: white;
+            border: none;
+            border-radius: 40px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: 0.2s;
+        }
+        #music-control:hover {
+            background: #0f6c4a;
+        }
+        #music-control.hidden {
+            display: none;
         }
     </style>
 </head>
@@ -175,6 +196,9 @@
         <source src="background-music.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
+
+    <!-- Manual music play button (hidden until needed) -->
+    <button id="music-control" class="hidden">▶ Play Background Music</button>
 
     <div class="reveal">
         <div class="slides">
@@ -215,7 +239,7 @@
                 <p class="footer-note">Thousands of SMEs with owners wanting to step back. Thousands of young people wanting entrepreneurship but priced out.</p>
             </section>
 
-            <!-- SLIDE 3: SOLUTION SUMMARY (horizontally centered content) -->
+            <!-- SLIDE 3: SOLUTION SUMMARY -->
             <section>
                 <h2>The Solution – Simple Summary</h2>
                 <div class="two-col">
@@ -245,7 +269,7 @@
                 </div>
             </section>
 
-            <!-- SLIDE 4: HOW IT WORKS – HORIZONTAL STEPS (CENTERED) -->
+            <!-- SLIDE 4: HOW IT WORKS -->
             <section>
                 <h2>How It Works</h2>
                 <div class="step-horizontal">
@@ -268,7 +292,7 @@
                 <p class="footer-note">No cost to owner. No capital needed from CEO.</p>
             </section>
 
-            <!-- SLIDE 5: FEE STRUCTURE (THE MAGIC) -->
+            <!-- SLIDE 5: FEE STRUCTURE -->
             <section>
                 <h2>The Magic – Fee Structure</h2>
                 <p style="font-size:1.1rem; background:#ffe8e0; padding:0.8rem; border-radius:40px; margin-bottom:1.5rem;">Traditional headhunters: owners pay 20‑30% upfront → expensive, hard to sell.</p>
@@ -366,7 +390,6 @@
             const title = slide.querySelector('.title-line');
             if (!title) return;
 
-            // Split the title into characters only once
             if (!title.classList.contains('split-done')) {
                 const text = title.innerText;
                 title.innerHTML = '';
@@ -379,62 +402,66 @@
                 title.classList.add('split-done');
             }
 
-            // Kill any previous animation on these chars
             gsap.killTweensOf(title.querySelectorAll('.char'));
-
-            // Start a gentle, continuous wave
             gsap.to(title.querySelectorAll('.char'), {
                 y: -8,
                 duration: 1.2,
                 ease: 'sine.inOut',
-                stagger: {
-                    each: 0.08,
-                    from: 'start',
-                },
+                stagger: { each: 0.08, from: 'start' },
                 repeat: -1,
                 yoyo: true
             });
 
-            // Fade in subtitle (only once)
             gsap.fromTo(slide.querySelector('.sub-line'),
                 { opacity: 0, y: 20 },
                 { opacity: 1, y: 0, duration: 1, delay: 0.5 }
             );
         }
 
-        // ===== BACKGROUND MUSIC – FIXED TO START RELIABLY =====
+        // ===== BACKGROUND MUSIC – WITH MANUAL FALLBACK =====
         const music = document.getElementById('bg-music');
+        const musicBtn = document.getElementById('music-control');
 
-        function tryPlayMusic() {
-            // If already playing, don't try again
-            if (!music.paused) return;
+        function startMusic(force = false) {
+            if (!music.paused) return; // already playing
 
-            music.play().catch(e => {
-                // Autoplay was blocked – we'll wait for user interaction
-                console.log('Music autoplay blocked, will start on user interaction');
-            });
+            music.play()
+                .then(() => {
+                    console.log('Music started');
+                    musicBtn.classList.add('hidden'); // hide button on success
+                })
+                .catch(error => {
+                    console.warn('Music autoplay failed:', error);
+                    // Show button so user can start manually
+                    musicBtn.classList.remove('hidden');
+                });
         }
 
-        // Try on slide change (works after first interaction)
-        Reveal.on('slidechanged', tryPlayMusic);
+        // Try to autoplay on user interaction (click, key, slide change)
+        document.addEventListener('click', () => startMusic(), { once: true });
+        document.addEventListener('keydown', () => startMusic(), { once: true });
+        Reveal.on('slidechanged', () => startMusic());
 
-        // Also try on any click or keydown
-        document.addEventListener('click', tryPlayMusic);
-        document.addEventListener('keydown', tryPlayMusic);
+        // Manual button click
+        musicBtn.addEventListener('click', () => {
+            startMusic();
+            // If still fails, maybe file missing – alert user
+            music.play().catch(e => {
+                alert('Could not play music. Check that background-music.mp3 exists in the same folder as this HTML file.');
+            });
+        });
 
-        // Try on ready (may fail due to autoplay policy)
-        Reveal.on('ready', tryPlayMusic);
+        // Try on ready (may be blocked, but we still try)
+        Reveal.on('ready', () => startMusic());
 
         // ===== GSAP ANIMATIONS FOR OTHER SLIDES =====
         function animateSlide(slide) {
             gsap.set(slide.querySelectorAll('.gsap-hidden'), { clearProps: 'all' });
 
-            // Slide 1: wavy title (continuous)
             if (slide.querySelector('.title-line')) {
                 setupWavyTitle(slide);
             }
 
-            // Slide 2
             if (slide.querySelector('.owner-col')) {
                 gsap.from(slide.querySelector('.owner-col'), { x: -100, opacity: 0, duration: 0.7, ease: 'power2.out' });
                 gsap.from(slide.querySelector('.ceo-col'), { x: 100, opacity: 0, duration: 0.7, ease: 'power2.out', delay: 0.2 });
@@ -442,38 +469,32 @@
                 gsap.from(slide.querySelectorAll('.ceo-col li'), { opacity: 0, x: 20, stagger: 0.1, delay: 0.5 });
             }
 
-            // Slide 3
             if (slide.querySelector('.owner-solution')) {
                 gsap.from(slide.querySelector('.owner-solution'), { scale: 0.8, opacity: 0, duration: 0.6, ease: 'back.out(1.2)' });
                 gsap.from(slide.querySelector('.ceo-solution'), { scale: 0.8, opacity: 0, duration: 0.6, delay: 0.3, ease: 'back.out(1.2)' });
                 gsap.from(slide.querySelector('.center-piece'), { y: 30, opacity: 0, duration: 0.8, delay: 0.6 });
             }
 
-            // Slide 4
             if (slide.querySelector('.step1')) {
                 gsap.from(slide.querySelectorAll('.card'), { opacity: 0, y: 40, stagger: 0.2, duration: 0.7, ease: 'power2.out' });
             }
 
-            // Slide 5
             if (slide.querySelector('.rm0')) {
                 gsap.from(slide.querySelector('table'), { opacity: 0, y: 30, duration: 0.6 });
                 gsap.to(slide.querySelector('.rm0'), { scale: 1.2, repeat: 2, yoyo: true, duration: 0.4, delay: 0.8, ease: 'power1.inOut' });
                 gsap.from(slide.querySelector('div[style*="background:#dff9fb"]'), { x: -80, opacity: 0, duration: 0.8, delay: 0.5 });
             }
 
-            // Slide 6
             if (slide.querySelector('.express')) {
                 gsap.from(slide.querySelector('.express'), { x: -200, opacity: 0, duration: 0.7 });
                 gsap.from(slide.querySelector('.comprehensive'), { x: 200, opacity: 0, duration: 0.7, delay: 0.2 });
                 gsap.from(slide.querySelectorAll('.badge'), { scale: 0, rotation: -10, stagger: 0.2, delay: 0.5 });
             }
 
-            // Slide 7
             if (slide.querySelector('.type1')) {
                 gsap.from(slide.querySelectorAll('.col'), { opacity: 0, y: 40, stagger: 0.2, duration: 0.6, ease: 'power2.out' });
             }
 
-            // Slide 8
             if (slide.querySelector('ul')) {
                 gsap.from(slide.querySelector('ul').children, { opacity: 0, x: -30, stagger: 0.15, duration: 0.6 });
                 gsap.from(slide.querySelector('p[style*="font-size:1.3rem"]'), { scale: 0.5, opacity: 0, delay: 0.5, duration: 0.6, ease: 'elastic.out(1, 0.3)' });
@@ -483,20 +504,12 @@
         Reveal.on('ready', (event) => animateSlide(event.currentSlide));
         Reveal.on('slidechanged', (event) => animateSlide(event.currentSlide));
 
-        // Stop music on 'S' key
+        // Stop music on 'S'
         document.addEventListener('keydown', (e) => {
             if (e.key === 's' || e.key === 'S') {
                 music.pause();
             }
         });
     </script>
-
-    <!-- additional tweaks -->
-    <style>
-        .reveal .card p { margin: 0.5rem 0; font-size: 1rem; }
-        .reveal .badge { font-size: 1rem; }
-        .reveal .center-piece { font-size: 1.1rem; }
-        .reveal .footer-note { font-size: 0.85rem; }
-    </style>
 </body>
 </html>

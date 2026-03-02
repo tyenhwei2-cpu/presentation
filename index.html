@@ -93,21 +93,19 @@
             display: inline-block;
             text-align: left;
         }
-        /* Vertical step cards for Slide 4 – made more compact */
-        .step-vertical {
+        /* Horizontal step cards for Slide 4 – centered and flexible */
+        .step-horizontal {
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1rem;
-            margin-top: 0.5rem;
-            width: 100%;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1rem;
         }
-        .step-vertical .card {
-            width: 90%;
-            max-width: 500px;
-            margin: 0 auto;
-            text-align: left;
-            padding: 1.2rem;
+        .step-horizontal .card {
+            flex: 0 1 300px; /* fixed width, but can shrink/grow */
+            min-width: 250px;
+            margin: 0;
+            padding: 1.5rem;
         }
         .reveal .badge { 
             background: #1e3a5f; 
@@ -116,7 +114,7 @@
             border-radius: 30px; 
             font-weight: 600; 
             display: inline-block; 
-            margin-bottom: 0.8rem; 
+            margin-bottom: 1rem; 
         }
         .reveal .table { 
             background: white; 
@@ -239,10 +237,10 @@
                 </div>
             </section>
 
-            <!-- SLIDE 4: HOW IT WORKS – VERTICAL STEPS (COMPACT) -->
+            <!-- SLIDE 4: HOW IT WORKS – HORIZONTAL STEPS (CENTERED) -->
             <section>
                 <h2>How It Works</h2>
-                <div class="step-vertical">
+                <div class="step-horizontal">
                     <div class="card step1">
                         <span class="badge">1</span>
                         <h3>Owner Sets Terms</h3>
@@ -348,14 +346,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 
     <script>
-        // Initialize Reveal.js with flexible dimensions
+        // Initialize Reveal.js
         Reveal.initialize({
             hash: true,
             transition: 'slide',
             backgroundTransition: 'fade',
         });
 
-        // GSAP animations (unchanged)
+        // GSAP animations (unchanged, but we keep them)
         function animateSlide(slide) {
             gsap.set(slide.querySelectorAll('.gsap-hidden'), { clearProps: 'all' });
 
@@ -403,15 +401,10 @@
             }
         }
 
-        Reveal.on('ready', function(event) {
-            animateSlide(event.currentSlide);
-        });
+        Reveal.on('ready', (event) => animateSlide(event.currentSlide));
+        Reveal.on('slidechanged', (event) => animateSlide(event.currentSlide));
 
-        Reveal.on('slidechanged', function(event) {
-            animateSlide(event.currentSlide);
-        });
-
-        // ===== VOICE‑OVER WITH FEMALE VOICE PREFERENCE – FIXED =====
+        // ===== VOICE‑OVER – SIMPLIFIED TO PLAY ON EVERY SLIDE =====
         const slideTexts = [
             "Welcome to LegacyBridge Malaysia. We bridge business owners who want to step back with the next generation of leaders.",
             "On one side, business owners have spent decades building their companies. Their children aren't interested in taking over, and they don't want to sell or close – they're trapped without a successor. On the other side, young Malaysians have the drive and ability to run a business but lack the capital to buy or start one. They're stuck with no entry point. Thousands of SMEs have owners wanting to step back, and thousands of young people want to become entrepreneurs but are priced out.",
@@ -424,7 +417,6 @@
         ];
 
         let utterance = null;
-        let lastSpokenIndex = -1; // Track last spoken slide to avoid double-speaking
 
         function getFemaleVoice() {
             const voices = window.speechSynthesis.getVoices();
@@ -436,10 +428,6 @@
 
         function speakCurrentSlide() {
             const index = Reveal.getIndices().h;
-
-            // Prevent speaking the same slide twice in a row
-            if (index === lastSpokenIndex) return;
-            lastSpokenIndex = index;
 
             // Cancel any ongoing speech
             if (utterance) {
@@ -460,19 +448,15 @@
             utterance.pitch = 1;
             utterance.volume = 1;
 
-            // Small delay to avoid race conditions with cancel
-            setTimeout(() => {
-                window.speechSynthesis.speak(utterance);
-            }, 50);
+            window.speechSynthesis.speak(utterance);
         }
 
         // Speak when slide changes
-        Reveal.on('slidechanged', () => {
-            speakCurrentSlide();
-        });
+        Reveal.on('slidechanged', speakCurrentSlide);
 
-        // Speak first slide when ready – ensure voices are loaded
+        // Speak first slide when ready
         Reveal.on('ready', () => {
+            // Ensure voices are loaded before first speak
             if (window.speechSynthesis.getVoices().length) {
                 speakCurrentSlide();
             } else {
@@ -486,7 +470,6 @@
         document.addEventListener('keydown', (e) => {
             if (e.key === 's' || e.key === 'S') {
                 window.speechSynthesis.cancel();
-                lastSpokenIndex = -1; // Reset so next slide speaks
             }
         });
     </script>

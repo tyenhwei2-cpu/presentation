@@ -402,22 +402,28 @@
             );
         }
 
-        // ===== BACKGROUND MUSIC =====
+        // ===== BACKGROUND MUSIC – FIXED TO START RELIABLY =====
         const music = document.getElementById('bg-music');
-        let musicStarted = false;
 
-        function startMusic() {
-            if (!musicStarted) {
-                music.play().catch(e => console.log('Autoplay blocked, waiting for user interaction'));
-                musicStarted = true;
-            }
+        function tryPlayMusic() {
+            // If already playing, don't try again
+            if (!music.paused) return;
+
+            music.play().catch(e => {
+                // Autoplay was blocked – we'll wait for user interaction
+                console.log('Music autoplay blocked, will start on user interaction');
+            });
         }
 
-        // Try to start music on first slide change or user interaction
-        Reveal.on('slidechanged', startMusic);
-        document.addEventListener('click', startMusic, { once: true });
-        document.addEventListener('keydown', startMusic, { once: true });
-        Reveal.on('ready', startMusic);
+        // Try on slide change (works after first interaction)
+        Reveal.on('slidechanged', tryPlayMusic);
+
+        // Also try on any click or keydown
+        document.addEventListener('click', tryPlayMusic);
+        document.addEventListener('keydown', tryPlayMusic);
+
+        // Try on ready (may fail due to autoplay policy)
+        Reveal.on('ready', tryPlayMusic);
 
         // ===== GSAP ANIMATIONS FOR OTHER SLIDES =====
         function animateSlide(slide) {

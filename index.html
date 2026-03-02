@@ -11,10 +11,65 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         * { font-family: 'Inter', sans-serif; }
+        /* Base reveal background – transparent so particles/gradient show through */
         .reveal {
             font-size: clamp(14px, 2vw, 18px);
-            background: #f9fafc;
+            background: transparent;
+            position: relative;
+            overflow: hidden;
         }
+        /* Animated gradient pseudo-element (Option 1) */
+        .reveal::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(-45deg, #f9fafc, #e0e8ff, #d4e0ff, #f9fafc);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            z-index: -2;
+            pointer-events: none;
+        }
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Particle container (Option 2) – fixed, behind slides but above gradient */
+        #tsparticles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none; /* so clicks pass through to slides */
+        }
+
+        /* Ensure slides are above background layers */
+        .reveal .slides {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Glow effect (Option 7) */
+        @keyframes soft-glow {
+            from { text-shadow: 0 0 5px rgba(30, 142, 110, 0.3); }
+            to { text-shadow: 0 0 20px rgba(30, 142, 110, 0.8); }
+        }
+        .glow {
+            animation: soft-glow 2s infinite alternate;
+        }
+        /* Also apply to important numbers */
+        .rm0, .glow-number {
+            display: inline-block;
+            animation: soft-glow 2s infinite alternate;
+        }
+
+        /* Your existing styles (unchanged, but ensure no conflict) */
         .reveal h1 { 
             font-size: 3em; 
             color: #1e3a5f; 
@@ -155,11 +210,19 @@
             font-weight: 500;
             line-height: 1.5;
         }
-        /* initial hidden for GSAP */
-        .gsap-hidden { opacity: 0; transform: translateY(20px); }
+        /* additional tweaks */
+        .reveal .col ul { list-style-type: none; }
+        .reveal .col li::before { content: "✓"; color: #1e8e6e; margin-right: 0.6rem; font-weight: bold; font-size: 1rem; }
+        .reveal .card p { margin: 0.5rem 0; font-size: 1rem; }
+        .reveal .badge { font-size: 1rem; }
+        .reveal .center-piece { font-size: 1.1rem; }
+        .reveal .footer-note { font-size: 0.85rem; }
     </style>
 </head>
 <body>
+    <!-- tsParticles container (Option 2) -->
+    <div id="tsparticles"></div>
+
     <div class="reveal">
         <div class="slides">
 
@@ -259,13 +322,13 @@
                 <div class="table">
                     <table>
                         <tr><th>Who Pays</th><th>Amount</th><th>How</th></tr>
-                        <tr><td><strong>Owner</strong></td><td><span class="rm0">RM0</span></td><td>–</td></tr>
-                        <tr><td><strong>CEO</strong></td><td><strong>20% of first‑year salary</strong></td><td>Monthly deduction over 12 months</td></tr>
+                        <tr><td><strong>Owner</strong></td><td><span class="rm0 glow">RM0</span></td><td>–</td></tr>
+                        <tr><td><strong>CEO</strong></td><td><strong class="glow-number">20%</strong> of first‑year salary</td><td>Monthly deduction over 12 months</td></tr>
                         <tr><td><strong>Business</strong></td><td>CEO's salary (as normal)</td><td>–</td></tr>
                     </table>
                 </div>
                 <div style="margin-top:2rem; background:#dff9fb; padding:1.5rem; border-radius:24px;">
-                    <p style="margin:0"><strong>Why CEOs will pay:</strong><br>• Normally need <strong>RM200k–RM500k capital</strong> to start a business<br>• They pay <strong>RM2k–RM5k instead</strong> (small monthly)<br>• Salary from day one, equity later, mentorship</p>
+                    <p style="margin:0"><strong>Why CEOs will pay:</strong><br>• Normally need <strong class="glow-number">RM200k–RM500k capital</strong> to start a business<br>• They pay <strong class="glow-number">RM2k–RM5k instead</strong> (small monthly)<br>• Salary from day one, equity later, mentorship</p>
                 </div>
                 <p class="footer-note">✨ Win‑win‑win.</p>
             </section>
@@ -323,39 +386,38 @@
                         <li><strong>Aging owners:</strong> Many 50‑70 years old, no successors</li>
                         <li><strong>Youth unemployment/underemployment:</strong> Graduates working jobs below potential</li>
                         <li><strong>Entrepreneurship desire:</strong> High among young Malaysians, but capital is barrier</li>
+                        <li><strong>AI disruption:</strong> White‑collar jobs at risk – many will shift to real economy (SMEs)</li>
                     </ul>
                     <p style="margin-top:1.5rem; font-size:1.3rem; font-weight:700;">📈 Our addressable market: Thousands of matches waiting to happen.</p>
                 </div>
                 <p class="footer-note">First 3 placements as proof of concept.</p>
             </section>
-
         </div>
     </div>
 
     <!-- Reveal.js & GSAP libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.4.0/reveal.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+    <!-- tsParticles library (Option 2) -->
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
     <script>
         // Initialize Reveal.js with flexible dimensions
         Reveal.initialize({
             hash: true,
             transition: 'slide',
             backgroundTransition: 'fade',
-            // No fixed width/height – let it be responsive
         });
 
-        // GSAP animations triggered after slide loads
+        // GSAP animations (unchanged)
         function animateSlide(slide) {
-            // Reset any previous inline styles (optional)
             gsap.set(slide.querySelectorAll('.gsap-hidden'), { clearProps: 'all' });
 
-            // Slide 1: title lines stagger
             if (slide.querySelector('.title-line')) {
                 gsap.from(slide.querySelector('.title-line'), { opacity: 0, y: -50, duration: 0.8, ease: 'back.out(1.2)' });
                 gsap.from(slide.querySelector('.sub-line'), { opacity: 0, y: 30, duration: 0.8, delay: 0.3 });
             }
 
-            // Slide 2: two columns from sides
             if (slide.querySelector('.owner-col')) {
                 gsap.from(slide.querySelector('.owner-col'), { x: -100, opacity: 0, duration: 0.7, ease: 'power2.out' });
                 gsap.from(slide.querySelector('.ceo-col'), { x: 100, opacity: 0, duration: 0.7, ease: 'power2.out', delay: 0.2 });
@@ -363,62 +425,82 @@
                 gsap.from(slide.querySelectorAll('.ceo-col li'), { opacity: 0, x: 20, stagger: 0.1, delay: 0.5 });
             }
 
-            // Slide 3: solution columns pop
             if (slide.querySelector('.owner-solution')) {
                 gsap.from(slide.querySelector('.owner-solution'), { scale: 0.8, opacity: 0, duration: 0.6, ease: 'back.out(1.2)' });
                 gsap.from(slide.querySelector('.ceo-solution'), { scale: 0.8, opacity: 0, duration: 0.6, delay: 0.3, ease: 'back.out(1.2)' });
                 gsap.from(slide.querySelector('.center-piece'), { y: 30, opacity: 0, duration: 0.8, delay: 0.6 });
             }
 
-            // Slide 4: cards stagger
             if (slide.querySelector('.step1')) {
                 gsap.from(slide.querySelectorAll('.card'), { opacity: 0, y: 60, stagger: 0.15, duration: 0.7, ease: 'power2.out' });
             }
 
-            // Slide 5: table highlight + RM0 pulse
             if (slide.querySelector('.rm0')) {
                 gsap.from(slide.querySelector('table'), { opacity: 0, y: 30, duration: 0.6 });
+                // Note: glow animation is handled by CSS now, but we keep the pulse for extra? Let's keep both maybe.
                 gsap.to(slide.querySelector('.rm0'), { scale: 1.2, repeat: 2, yoyo: true, duration: 0.4, delay: 0.8, ease: 'power1.inOut' });
                 gsap.from(slide.querySelector('div[style*="background:#dff9fb"]'), { x: -80, opacity: 0, duration: 0.8, delay: 0.5 });
             }
 
-            // Slide 6: two paths slide in
             if (slide.querySelector('.express')) {
                 gsap.from(slide.querySelector('.express'), { x: -200, opacity: 0, duration: 0.7 });
                 gsap.from(slide.querySelector('.comprehensive'), { x: 200, opacity: 0, duration: 0.7, delay: 0.2 });
                 gsap.from(slide.querySelectorAll('.badge'), { scale: 0, rotation: -10, stagger: 0.2, delay: 0.5 });
             }
 
-            // Slide 7: three owner types fade up
             if (slide.querySelector('.type1')) {
                 gsap.from(slide.querySelectorAll('.col'), { opacity: 0, y: 40, stagger: 0.2, duration: 0.6, ease: 'power2.out' });
             }
 
-            // Slide 8: bullets fade in
             if (slide.querySelector('ul')) {
                 gsap.from(slide.querySelector('ul').children, { opacity: 0, x: -30, stagger: 0.15, duration: 0.6 });
                 gsap.from(slide.querySelector('p[style*="font-size:1.3rem"]'), { scale: 0.5, opacity: 0, delay: 0.5, duration: 0.6, ease: 'elastic.out(1, 0.3)' });
             }
         }
 
-        // Animate first slide immediately
         Reveal.on('ready', function(event) {
             animateSlide(event.currentSlide);
         });
 
-        // Animate on slide change
         Reveal.on('slidechanged', function(event) {
             animateSlide(event.currentSlide);
         });
+
+        // Initialize tsParticles (Option 2)
+        tsParticles.load({
+            id: "tsparticles",
+            options: {
+                background: { color: "transparent" },
+                particles: {
+                    number: { value: 30, density: { enable: true, width: 800, height: 600 } },
+                    color: { value: "#4a9eff" },
+                    shape: { type: "circle" },
+                    opacity: { value: 0.3, random: true },
+                    size: { value: 3, random: true },
+                    links: { enable: false }, // no lines, just dots
+                    move: {
+                        enable: true,
+                        speed: 0.5,
+                        direction: "none",
+                        random: true,
+                        straight: false,
+                        outModes: { default: "bounce" }
+                    }
+                },
+                interactivity: {
+                    events: {
+                        onhover: {
+                            enable: true,
+                            mode: "repulse"
+                        }
+                    },
+                    modes: {
+                        repulse: { distance: 100, duration: 0.4 }
+                    }
+                },
+                detectRetina: true
+            }
+        });
     </script>
-    <style>
-        /* additional tweaks for better fitting */
-        .reveal .col ul { list-style-type: none; }
-        .reveal .col li::before { content: "✓"; color: #1e8e6e; margin-right: 0.6rem; font-weight: bold; font-size: 1rem; }
-        .reveal .card p { margin: 0.5rem 0; font-size: 1rem; }
-        .reveal .badge { font-size: 1rem; }
-        .reveal .center-piece { font-size: 1.1rem; }
-        .reveal .footer-note { font-size: 0.85rem; }
-    </style>
 </body>
 </html>

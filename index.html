@@ -12,31 +12,31 @@
     <style>
         * { font-family: 'Inter', sans-serif; }
         .reveal {
-            font-size: clamp(14px, 2vw, 18px);
+            font-size: clamp(12px, 1.8vw, 16px); /* reduced base size */
             background: #f9fafc;
         }
         .reveal h1 { 
-            font-size: 3em; 
+            font-size: 2.8em; /* slightly smaller */
             color: #1e3a5f; 
             font-weight: 700; 
             letter-spacing: -0.02em; 
         }
         .reveal h2 { 
-            font-size: 2.2em; 
+            font-size: 2em; /* reduced from 2.2 */
             color: #0b2b4a; 
             border-bottom: 3px solid #4a9eff; 
             display: inline-block; 
             padding-bottom: 0.2em;
-            margin-bottom: 0.8em;
+            margin-bottom: 0.6em;
         }
         .reveal h3 { 
-            font-size: 1.6em; 
+            font-size: 1.4em; /* reduced from 1.6 */
             color: #1e3a5f; 
             margin-top: 0.2em;
         }
         .reveal .highlight { 
             background: #e0f2e9; 
-            padding: 0.2em 0.8em; 
+            padding: 0.2em 0.6em; 
             border-radius: 30px; 
             font-weight: 700; 
             color: #0f6c4a;
@@ -44,46 +44,46 @@
         .reveal .rm0 { 
             background: #1e8e6e; 
             color: white; 
-            font-size: 1.4em; 
-            padding: 0.2em 0.8em; 
+            font-size: 1.3em; 
+            padding: 0.2em 0.6em; 
             border-radius: 50px; 
             display: inline-block; 
         }
         .reveal .two-col, .reveal .three-col { 
             display: flex; 
-            gap: 1.5rem; 
+            gap: 1rem; 
             flex-wrap: wrap; 
             justify-content: center;
-            margin-top: 1rem;
+            margin-top: 0.5rem;
         }
         .reveal .col, .reveal .card { 
             background: white; 
-            padding: 1.5rem; 
-            border-radius: 24px; 
-            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); 
-            flex: 1 1 280px; 
-            min-width: 250px;
+            padding: 1rem; /* reduced from 1.5rem */
+            border-radius: 20px; 
+            box-shadow: 0 8px 20px -5px rgba(0,0,0,0.1); 
+            flex: 1 1 260px; 
+            min-width: 220px;
             word-wrap: break-word;
         }
         .reveal .col ul { 
             list-style: none; 
             padding: 0; 
-            margin: 0.5rem 0;
+            margin: 0.3rem 0;
         }
         .reveal .col li { 
-            margin: 0.8rem 0; 
-            font-size: 1.1rem; 
+            margin: 0.5rem 0; 
+            font-size: 1rem; 
             display: flex; 
             align-items: center; 
             gap: 0.5rem; 
-            line-height: 1.3;
+            line-height: 1.2;
         }
         .reveal .col li::before { 
             content: "✓"; 
             color: #1e8e6e; 
             font-weight: bold; 
-            font-size: 1rem; 
-            margin-right: 0.6rem;
+            font-size: 0.9rem; 
+            margin-right: 0.4rem;
         }
         /* Center content horizontally inside columns on Slide 3 */
         .owner-solution, .ceo-solution {
@@ -98,70 +98,73 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 1.5rem;
-            margin-top: 1rem;
+            gap: 1rem;
+            margin-top: 0.5rem;
         }
         .step-horizontal .card {
-            flex: 0 1 300px;
-            min-width: 250px;
+            flex: 0 1 260px;
+            min-width: 220px;
             margin: 0;
-            padding: 1.5rem;
+            padding: 1rem;
         }
         .reveal .badge { 
             background: #1e3a5f; 
             color: white; 
-            padding: 0.3rem 1rem; 
+            padding: 0.2rem 0.8rem; 
             border-radius: 30px; 
             font-weight: 600; 
             display: inline-block; 
-            margin-bottom: 1rem; 
+            margin-bottom: 0.5rem; 
+            font-size: 0.9rem;
         }
         .reveal .table { 
             background: white; 
-            border-radius: 24px; 
-            padding: 1.5rem; 
+            border-radius: 20px; 
+            padding: 1rem; 
             box-shadow: 0 5px 15px rgba(0,0,0,0.05); 
             overflow-x: auto;
+            margin: 0 auto;
+            max-width: 800px;
         }
         .reveal table { 
             width: 100%; 
             border-collapse: collapse; 
-            font-size: 1rem;
+            font-size: 0.95rem;
         }
         .reveal th { 
             background: #1e3a5f; 
             color: white; 
-            padding: 0.8rem; 
+            padding: 0.6rem; 
             font-weight: 600; 
         }
         .reveal td { 
-            padding: 1rem 0.8rem; 
+            padding: 0.7rem 0.5rem; 
             border-bottom: 1px solid #eef2f6; 
         }
         .reveal .emph { 
-            font-size: 1.3em; 
+            font-size: 1.2em; 
             font-weight: 700; 
             color: #0f6c4a; 
         }
         .reveal .icon { 
-            font-size: 2.5rem; 
-            margin-bottom: 0.5rem; 
+            font-size: 2rem; 
+            margin-bottom: 0.2rem; 
             display: block;
         }
         .reveal .footer-note { 
-            margin-top: 2rem; 
-            font-size: 0.9rem; 
+            margin-top: 1rem; 
+            font-size: 0.8rem; 
             color: #64748b; 
         }
         .reveal .center-piece {
             background: #e9efff;
-            padding: 1.5rem;
-            border-radius: 40px;
-            margin: 1.5rem auto;
-            max-width: 900px;
-            font-size: 1.2rem;
+            padding: 1rem;
+            border-radius: 30px;
+            margin: 1rem auto;
+            max-width: 700px;
+            font-size: 1rem;
             font-weight: 500;
-            line-height: 1.5;
+            line-height: 1.4;
         }
         .char {
             display: inline-block;
@@ -203,13 +206,13 @@
     <div class="reveal">
         <div class="slides">
 
-            <!-- SLIDE 1: TITLE (with continuous wavy animation) -->
+            <!-- SLIDE 1: TITLE -->
             <section>
                 <h1 class="title-line">LegacyBridge Malaysia</h1>
                 <h3 class="sub-line" style="font-weight:400; margin-top:0.5rem;">Bridging business owners who want to step back with the next generation of leaders</h3>
             </section>
 
-            <!-- SLIDE 2: TWO‑SIDED PROBLEM -->
+            <!-- SLIDE 2: PROBLEM -->
             <section>
                 <h2>The Problem</h2>
                 <div class="two-col">
@@ -295,7 +298,7 @@
             <!-- SLIDE 5: FEE STRUCTURE -->
             <section>
                 <h2>The Magic – Fee Structure</h2>
-                <p style="font-size:1.1rem; background:#ffe8e0; padding:0.8rem; border-radius:40px; margin-bottom:1.5rem;">Traditional headhunters: owners pay 20‑30% upfront → expensive, hard to sell.</p>
+                <p style="font-size:1rem; background:#ffe8e0; padding:0.6rem; border-radius:40px; margin-bottom:1rem;">Traditional headhunters: owners pay 20‑30% upfront → expensive, hard to sell.</p>
                 <div class="table">
                     <table>
                         <tr><th>Who Pays</th><th>Amount</th><th>How</th></tr>
@@ -304,7 +307,7 @@
                         <tr><td><strong>Business</strong></td><td>CEO's salary (as normal)</td><td>–</td></tr>
                     </table>
                 </div>
-                <div style="margin-top:2rem; background:#dff9fb; padding:1.5rem; border-radius:24px;">
+                <div style="margin-top:1.5rem; background:#dff9fb; padding:1rem; border-radius:20px;">
                     <p style="margin:0"><strong>Why CEOs will pay:</strong><br>• Normally need <strong>RM200k–RM500k capital</strong> to start a business<br>• They pay <strong>RM2k–RM5k instead</strong> (small monthly)<br>• Salary from day one, equity later, mentorship</p>
                 </div>
                 <p class="footer-note">✨ Win‑win‑win.</p>
@@ -356,16 +359,16 @@
             <!-- SLIDE 8: MARKET SIZE & OPPORTUNITY -->
             <section>
                 <h2>Market Size & Opportunity</h2>
-                <div style="background:white; border-radius:24px; padding:1.8rem; text-align:left; max-width:900px; margin:0 auto;">
+                <div style="background:white; border-radius:20px; padding:1.2rem; text-align:left; max-width:800px; margin:0 auto;">
                     <p><strong>Malaysia context:</strong></p>
-                    <ul style="list-style-type:disc; font-size:1.1rem; padding-left:1.5rem;">
+                    <ul style="list-style-type:disc; font-size:1rem; padding-left:1.2rem;">
                         <li><strong>SMEs:</strong> 97% of businesses, ~1 million total</li>
                         <li><strong>Aging owners:</strong> Many 50‑70 years old, no successors</li>
                         <li><strong>Youth unemployment/underemployment:</strong> Graduates working jobs below potential</li>
                         <li><strong>Entrepreneurship desire:</strong> High among young Malaysians, but capital is barrier</li>
                         <li><strong>AI disruption:</strong> White‑collar jobs at risk – many will shift to real economy (SMEs)</li>
                     </ul>
-                    <p style="margin-top:1.5rem; font-size:1.3rem; font-weight:700;">📈 Our addressable market: Thousands of matches waiting to happen.</p>
+                    <p style="margin-top:1.2rem; font-size:1.2rem; font-weight:700;">📈 Our addressable market: Thousands of matches waiting to happen.</p>
                 </div>
                 <p class="footer-note">First 3 placements as proof of concept.</p>
             </section>
@@ -378,11 +381,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 
     <script>
-        // Initialize Reveal.js
+        // Initialize Reveal.js with explicit dimensions
         Reveal.initialize({
             hash: true,
             transition: 'slide',
             backgroundTransition: 'fade',
+            width: 1200,      // base width
+            height: 700,       // base height
+            margin: 0.1,       // small border
         });
 
         // ===== CONTINUOUS WAVY TITLE ON SLIDE 1 =====
@@ -404,7 +410,7 @@
 
             gsap.killTweensOf(title.querySelectorAll('.char'));
             gsap.to(title.querySelectorAll('.char'), {
-                y: -8,
+                y: -6,
                 duration: 1.2,
                 ease: 'sine.inOut',
                 stagger: { each: 0.08, from: 'start' },
@@ -422,36 +428,31 @@
         const music = document.getElementById('bg-music');
         const musicBtn = document.getElementById('music-control');
 
-        function startMusic(force = false) {
-            if (!music.paused) return; // already playing
+        function startMusic() {
+            if (!music.paused) return;
 
             music.play()
                 .then(() => {
                     console.log('Music started');
-                    musicBtn.classList.add('hidden'); // hide button on success
+                    musicBtn.classList.add('hidden');
                 })
                 .catch(error => {
                     console.warn('Music autoplay failed:', error);
-                    // Show button so user can start manually
                     musicBtn.classList.remove('hidden');
                 });
         }
 
-        // Try to autoplay on user interaction (click, key, slide change)
         document.addEventListener('click', () => startMusic(), { once: true });
         document.addEventListener('keydown', () => startMusic(), { once: true });
         Reveal.on('slidechanged', () => startMusic());
 
-        // Manual button click
         musicBtn.addEventListener('click', () => {
             startMusic();
-            // If still fails, maybe file missing – alert user
             music.play().catch(e => {
                 alert('Could not play music. Check that background-music.mp3 exists in the same folder as this HTML file.');
             });
         });
 
-        // Try on ready (may be blocked, but we still try)
         Reveal.on('ready', () => startMusic());
 
         // ===== GSAP ANIMATIONS FOR OTHER SLIDES =====
@@ -463,10 +464,10 @@
             }
 
             if (slide.querySelector('.owner-col')) {
-                gsap.from(slide.querySelector('.owner-col'), { x: -100, opacity: 0, duration: 0.7, ease: 'power2.out' });
-                gsap.from(slide.querySelector('.ceo-col'), { x: 100, opacity: 0, duration: 0.7, ease: 'power2.out', delay: 0.2 });
-                gsap.from(slide.querySelectorAll('.owner-col li'), { opacity: 0, x: -20, stagger: 0.1, delay: 0.3 });
-                gsap.from(slide.querySelectorAll('.ceo-col li'), { opacity: 0, x: 20, stagger: 0.1, delay: 0.5 });
+                gsap.from(slide.querySelector('.owner-col'), { x: -80, opacity: 0, duration: 0.7, ease: 'power2.out' });
+                gsap.from(slide.querySelector('.ceo-col'), { x: 80, opacity: 0, duration: 0.7, ease: 'power2.out', delay: 0.2 });
+                gsap.from(slide.querySelectorAll('.owner-col li'), { opacity: 0, x: -15, stagger: 0.1, delay: 0.3 });
+                gsap.from(slide.querySelectorAll('.ceo-col li'), { opacity: 0, x: 15, stagger: 0.1, delay: 0.5 });
             }
 
             if (slide.querySelector('.owner-solution')) {
@@ -476,7 +477,7 @@
             }
 
             if (slide.querySelector('.step1')) {
-                gsap.from(slide.querySelectorAll('.card'), { opacity: 0, y: 40, stagger: 0.2, duration: 0.7, ease: 'power2.out' });
+                gsap.from(slide.querySelectorAll('.card'), { opacity: 0, y: 30, stagger: 0.2, duration: 0.7, ease: 'power2.out' });
             }
 
             if (slide.querySelector('.rm0')) {
@@ -486,18 +487,18 @@
             }
 
             if (slide.querySelector('.express')) {
-                gsap.from(slide.querySelector('.express'), { x: -200, opacity: 0, duration: 0.7 });
-                gsap.from(slide.querySelector('.comprehensive'), { x: 200, opacity: 0, duration: 0.7, delay: 0.2 });
+                gsap.from(slide.querySelector('.express'), { x: -150, opacity: 0, duration: 0.7 });
+                gsap.from(slide.querySelector('.comprehensive'), { x: 150, opacity: 0, duration: 0.7, delay: 0.2 });
                 gsap.from(slide.querySelectorAll('.badge'), { scale: 0, rotation: -10, stagger: 0.2, delay: 0.5 });
             }
 
             if (slide.querySelector('.type1')) {
-                gsap.from(slide.querySelectorAll('.col'), { opacity: 0, y: 40, stagger: 0.2, duration: 0.6, ease: 'power2.out' });
+                gsap.from(slide.querySelectorAll('.col'), { opacity: 0, y: 30, stagger: 0.2, duration: 0.6, ease: 'power2.out' });
             }
 
             if (slide.querySelector('ul')) {
-                gsap.from(slide.querySelector('ul').children, { opacity: 0, x: -30, stagger: 0.15, duration: 0.6 });
-                gsap.from(slide.querySelector('p[style*="font-size:1.3rem"]'), { scale: 0.5, opacity: 0, delay: 0.5, duration: 0.6, ease: 'elastic.out(1, 0.3)' });
+                gsap.from(slide.querySelector('ul').children, { opacity: 0, x: -20, stagger: 0.15, duration: 0.6 });
+                gsap.from(slide.querySelector('p[style*="font-size:1.2rem"]'), { scale: 0.5, opacity: 0, delay: 0.5, duration: 0.6, ease: 'elastic.out(1, 0.3)' });
             }
         }
 
